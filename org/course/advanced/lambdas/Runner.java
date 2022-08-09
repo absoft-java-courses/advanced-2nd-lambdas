@@ -14,7 +14,36 @@ public class Runner {
         exampleWithRestaurant();
 
         System.out.println("\n\n\n\n\n\n");
+        exampleWithList();
 
+        System.out.println("\n\n\n\n\n\n");
+        howeWork();
+    }
+
+    private static void howeWork() {
+        var list = Arrays.asList(
+                "The quick brown Fox jumps over the lazy Dog.",
+                "Waltz, bad nymph, for quick jigs vex.",
+                "Pack my box with five dozen liquor jugs.",
+                "A MAD BOXER SHOT A QUICK, GLOVED JAB TO THE JAW OF HIS DIZZY OPPONENT."
+        );
+        System.out.println("Source list " + list);
+
+        // TODO: 1) use replaceAll to lowercase all strings. You can use myString.toLowerCase() method
+//        list.replaceAll(...your lambda or method reference here...);
+
+        System.out.println("List with lowercase strings: " + list);
+
+        // TODO: 2) sort this list, by the string length
+        System.out.println("List after sort: " + list);
+
+        // TODO: 3) use list.forEach(...your lambda/method ref...) to print all elements to console
+
+        // TODO: 4) use list.removeIf(...) to remove each element that contain at list two commas (only "Waltz, bad nymph, for quick jigs vex.")
+        System.out.println("List removing string with 2+ commas: " + list);
+    }
+
+    private static void exampleWithList() {
         var list = Arrays.asList(
                 "string1",
                 "string 3!!!",
@@ -64,10 +93,10 @@ public class Runner {
 //        chef.execute(order3);
 
         //
-        chef.execute( () -> {
+        chef.execute(() -> {
             System.out.println("hello from long lambda body");
             return "hello from long lambda";
-        } );
+        });
         chef.execute(() -> "hello from short lambda");
 
         //
