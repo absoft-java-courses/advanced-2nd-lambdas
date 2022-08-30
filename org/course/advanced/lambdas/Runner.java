@@ -5,12 +5,24 @@ import org.course.advanced.lambdas.restaurant.Order;
 import org.course.advanced.lambdas.restaurant.Order1;
 import org.course.advanced.lambdas.restaurant.Order2;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 public class Runner {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         exampleWithRestaurant();
 
         System.out.println("\n\n\n\n\n\n");
@@ -18,6 +30,55 @@ public class Runner {
 
         System.out.println("\n\n\n\n\n\n");
         howeWork();
+
+
+        System.out.println("\n\n\n\n\n\n");
+        exampleWithStreams();
+    }
+
+    private static void exampleWithStreams() throws IOException {
+        var list = Arrays.asList(
+                "string1",
+                "string 3!!!",
+                null,
+                "string 2"
+        );
+
+
+        var collect = list.stream()
+//                .filter(Objects::nonNull)
+                .filter(str -> str != null && !str.equals("string 3!!!"))
+                .map(String::toUpperCase)
+                .peek(str -> System.out.printf("Element: '%s'\n", str))
+                .collect(Collectors.toList());
+        //
+
+        System.out.println("\n\n\n\n\n\n");
+
+        var filePath = new File("lines.txt").toPath();
+        var joinedString = Files.readAllLines(filePath).stream()
+                .map(String::trim)
+                .filter(line -> line.length() > 0)
+                .flatMap(line -> Stream.of(line.split(" ")))
+//                .map(line -> line.split(" "))
+//                .map(lineArray -> Stream.of(lineArray))
+//                .flatMap(streamOfStreams -> streamOfStreams)
+//                .map(word -> Integer.toString(word.length()))
+
+
+                .collect(Collectors.joining(" | ", "", "."));
+        System.out.println(joinedString);
+
+
+        Integer a = 1;
+        Integer b = 2;
+
+        Integer c = a + b;
+        int xxx;
+        Double xx;
+        double xafdf;
+
+        Stream<Integer> streamOfInt;
     }
 
     private static void howeWork() {
@@ -57,11 +118,15 @@ public class Runner {
 //        list.sort(new MyBigComparator());
         System.out.println(list);
 
-        Supplier<Order> orderSupplier = Order1::new;
-        Supplier<Order> orderSupplier1 = () -> new Order1();
-
         list.sort(Runner::compare);
         System.out.println(list);
+
+
+        Supplier<Order> orderSupplier = Order1::new;
+        Function<String, Order> function = Order1::new;
+
+
+        Supplier<Order> orderSupplier1 = () -> new Order1();
     }
 
     private static int compare(String str1, String str2) {
@@ -76,28 +141,28 @@ public class Runner {
     private static void exampleWithRestaurant() {
         var chef = new Chef();
 
-//        var order1 = new Order1();
-//        var order2 = new Order2();
-//
-//        var order3 = new Order() {
-//            public String getOrder() {
-//                return "tea";
-//            }
-//        };
-//
-//        //
-//        chef.execute(order1);
-//        chef.execute(order2);
-//
-//        //
-//        chef.execute(order3);
+        var order1 = new Order1();
+        var order2 = new Order2();
+
+        var order3 = new Order() {
+            public String getOrder() {
+                return "tea";
+            }
+        };
 
         //
-        chef.execute(() -> {
+        chef.execute(order1);
+        chef.execute(order2);
+
+        //
+        chef.execute(order3);
+
+        //
+        chef.execute( () -> {
             System.out.println("hello from long lambda body");
             return "hello from long lambda";
-        });
-        chef.execute(() -> "hello from short lambda");
+        } );
+        chef.execute(() ->  "hello from short lambda");
 
         //
         chef.execute(Runner::staticMethodReferenceExample);
@@ -111,7 +176,8 @@ public class Runner {
         return "hello from static method reference";
     }
 
+    private int xxx;
     private String methodReferenceExample() {
-        return "hello from method reference";
+        return "hello from method reference" + xxx;
     }
 }
